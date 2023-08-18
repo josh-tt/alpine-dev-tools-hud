@@ -2,22 +2,25 @@
     <template x-teleport="body">
         <div class="bg-gray-900/50" x-data="{show:false}">
             <div
-                class="fixed bottom-[36px] max-w-lg bg-gray-900/75 backdrop-blur-lg h-screen z-50 py-16 overflow-y-auto pr-16"
+                class="fixed bottom-[36px] max-w-lg bg-gray-900/90 backdrop-blur-lg h-screen z-50 py-16 overflow-y-auto pr-16"
                 x-show="show">
                 <!-- Loop over the alpine store and display the items in the object -->
                 <template x-for="[key, value] in Object.entries(devData)">
                     <!-- Check if inner object does not have 'devData' key -->
                     <template x-if="!value.hasOwnProperty('devData')">
-                        <div class="font-mono flex">
-                            <div class="px-4 py-1 font-bold text-xs bg-gray-500 text-white blur-2xl"
+                        <div class="font-mono divide-y-2 divide-gray-900">
+                            <div class="px-4 py-1 font-bold text-xs bg-gray-600 text-white blur-2xl"
                                 x-text="key"></div>
                             <div class="px-4 py-2 text-sm">
                                 <!-- Loop through properties of the inner object -->
-                                <template x-for="[innerKey, innerValue] in Object.entries(value)">
-                                    <div class="pb-3">
-                                        <div class="text-indigo-100 font-bold" x-text="`${innerKey}: `"></div>
+                                <template x-for="[innerKey, innerValue] in Object.entries(value)" :key="index">
+                                    <div class="py-3">
                                         <div
-                                            class="odd:bg-gray-50/10 even:bg-gray-200/10 text-indigo-200 min-w-fit flex-1 mt-3 text-xs p-2"
+                                            :class="innerKey === '_xdataId' ? 'text-pink-300 font-bold' : 'text-indigo-300 font-medium'"
+                                            class="font-medium text-xs" x-text="`${innerKey}: `"></div>
+                                        <div
+                                            :class="innerKey === '_xdataId' ? 'text-pink-300 font-light' : 'text-indigo-100 font-medium'"
+                                            class="bg-gray-700 min-w-fit flex-1 mt-3 text-xs p-2"
                                             x-text="`${innerValue}`"></div>
                                     </div>
                                 </template>
@@ -31,7 +34,7 @@
                 <div class=" w-full">
                     <button
                         class="px-4 py-2 font-semibold text-sm bg-gray-500 text-white rounded-none shadow-sm"
-                        x-on:click="console.log('DevToolsComponents: -', $devTools); devData = $devTools; show = true">
+                        x-on:click="devData = $devTools; show = true">
                         Log Alpine
                     </button>
 
